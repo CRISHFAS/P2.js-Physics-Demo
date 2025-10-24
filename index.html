@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p2.js/0.7.1/p2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p2.js/0.7.1/p2.renderer.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000000;
+            overflow: hidden;
+            color: rgba(255, 0, 0, 0.722);
+        }
+
+        .p2-canvas {
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        let app, world;
+        const baseFrame = { x: 0, y: 0.5, w: 6, h: 8 };
+
+        // Crear aplicación
+        app = new p2.WebGLRenderer(function () {
+            world = new p2.World({ gravity: [0, -10] });
+            this.setWorld(world);
+
+            // Configuración del solver
+            world.setGlobalStiffness(1e4);
+            world.solver.iterations = 20;
+            world.solver.tolerance = 0.01;
+            world.islandSplit = true;
+            world.solver.frictionIterations = 10;
+
+            // Suelo
+            const ground = new p2.Body({ mass: 0, position: [0, -2] });
+            ground.addShape(new p2.Plane());
+            world.addBody(ground);
+
+            // Forma de ejemplo
+            const example = new p2.Body({ mass: 1, position: [0, 2] });
+            example.fromPolygon([[-1, 1], [-1, 0], [1, 0], [1, 1], [0.5, 0.5]]);
+            world.addBody(example);
+
+            // Habilitar dibujo de polígonos
+            this.setState(p2.Renderer.DRAWPOLYGON);
+
+            // Configurar vista inicial
+            this.frame(baseFrame.x, baseFrame.y, baseFrame.w, baseFrame.h);
+        });
+
+        // Prevenir zoom del navegador con Ctrl+Scroll
+        document.addEventListener('wheel', (e) => {
+            if (e.ctrlKey) e.preventDefault();
+        }, { passive: false });
+    </script>
+</body>
+</html>
