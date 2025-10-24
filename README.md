@@ -24,7 +24,7 @@ Simulación de física 2D en tiempo real que muestra las capacidades básicas de
 
 ## Demo en Vivo
 
-[Ver Demo](https://tu-usuario.github.io/p2js-physics-demo)
+[Ver Demo](https://crishfas.github.io/P2.js-Physics-Demo)
 
 
 ### Controles Nativos
